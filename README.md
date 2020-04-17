@@ -20,7 +20,7 @@ Express is a framework for Node.js based on the Middleware Design Pattern.  Expr
 ## What is an API? / Intro to the Star Wars API (SWAPI)
 An Application Programming Interface or, API, is the code providing the structure for applications to connect with and access a server and / or database.  In short, APIs enable applications to communicate with one another.  Colloquially, APIs are thought of as web based APIs that return data in response to a request made by a client. This is the type of API you will be working with throughout this unit.  You can read more generally about APIs [here](https://medium.com/@perrysetgo/what-exactly-is-an-api-69f36968a41f).
 
-The API you will be working with for this challenge is the [Star Wars API (SWAPI)](https://swapi.co/documentation). It is a REST-based API which provides tons of data on different Star Wars characters, films, planets, etc.  There is a wealth of data to be fetched an manipulated, and we're only going to begin to scratch the surface of it!  Before you get started with the challenges below, take a look at the [docs](https://swapi.co/documentation).  You can even use their [sandbox](https://swapi.co/) to test out some requests before diving into the unit to get some practice and familiarity with the data you will be working with.
+The API you will be working with for this challenge is the [Star Wars API (SWAPI)](https://swapi.dev/documentation). It is a REST-based API which provides tons of data on different Star Wars characters, films, planets, etc.  There is a wealth of data to be fetched an manipulated, and we're only going to begin to scratch the surface of it!  Before you get started with the challenges below, take a look at the [docs](https://swapi.dev/documentation).  You can even use their [sandbox](https://swapi.dev/) to test out some requests before diving into the unit to get some practice and familiarity with the data you will be working with.
 
 ## What is our server going to do?
 There are a few goals we will be working towards when creating our server:
@@ -117,11 +117,11 @@ Express enables us to modularize our routes so that when we have a lot of routes
 1. [  ] Test your new route handler by going to `localhost:8080/`. When the react app loads you should now see a lot more data displayed. Alternatively, you can send a `GET` request to `http://localhost:3000/api` and you should get back a JSON object with a `characters` property defined.
 
 ### Save favorite characters
-You may notice that each character card in the React app has a star outline icon in the top right corner.  This icon denotes whether or not the user has selected the charater as one of their favorites.  A star outline notes that this character is _not_ a favorite and a filled star notes that this character _is_ a favorite.  Try clicking on a star outline for any character.  What happens? 🤔 Nothing! Because our server is not setup to handle adding / updating favorites.  We will now add this functionality so that our users can save their favs.
+You may notice that each character card in the React app has a star outline icon in the top right corner.  This icon denotes whether or not the user has selected the character as one of their favorites.  A star outline notes that this character is _not_ a favorite and a filled star notes that this character _is_ a favorite.  Try clicking on a star outline for any character.  What happens? 🤔 Nothing! Because our server is not setup to handle adding / updating favorites.  We will now add this functionality so that our users can save their favs.
 
 #### Configure express.json() global middleware
-Now, our clients will be sending some data with their requests to our API via the request body.  You'll remember from vanilla node that the request body data is transmitted as a stream.  Luckily though, Express has a handy piece of middlware which provides an abstraction for the process of concatenating the streaming body data.  Take a look at the [express.json()](https://expressjs.com/en/api.html#express.json) middleware docs.  This is what we will configure globally so that this process runs on _all_ incoming requests to our server. 
-1. [  ] In the same file, under the `// configure request body parser` section, setup a global middleware call to parse the request body as `json`.  **Hint:** see the Express docs on configuring global middlware.  **Hint 2:** see the Express docs for specific configurations on json.
+Now, our clients will be sending some data with their requests to our API via the request body.  You'll remember from vanilla node that the request body data is transmitted as a stream.  Luckily though, Express has a handy piece of middleware which provides an abstraction for the process of concatenating the streaming body data.  Take a look at the [express.json()](https://expressjs.com/en/api.html#express.json) middleware docs.  This is what we will configure globally so that this process runs on _all_ incoming requests to our server. 
+1. [  ] In the same file, under the `// configure request body parser` section, setup a global middleware call to parse the request body as `json`.  **Hint:** see the Express docs on configuring global middleware.  **Hint 2:** see the Express docs for specific configurations on json.
 
 #### Create fileController.getFavs
 First, we'll want to _get_ any current favorite selections so that we can add to them instead of overwriting them.
@@ -163,7 +163,7 @@ Now that we have any existing favs, let's add a new one.
     }
     ```
 
-#### Add route handler for requests to save favortite character
+#### Add route handler for requests to save favorite character
 1. [  ] In the `/server/routes/favs.js` file, add a new route handler for `POST` to `/:id`.
 1. [  ] This route handler should invoke the following middleware functions:
     1. [  ] fileController.getFavs
@@ -216,7 +216,7 @@ Now that we have any existing favs, let's add a new one.
     }
     ```
 
-#### Add route handler for requests to remove a favortite character
+#### Add route handler for requests to remove a favorite character
 1. [  ] In the `/server/routes/favs.js` file, add a new route handler for `DELETE` to `/:id`.
 1. [  ] This route handler should invoke the following middleware functions:
     1. [  ] fileController.getFavs
@@ -231,8 +231,8 @@ Now that we have some of our basic functionality set up, we can see that there a
 
 #### Create starWarsController.getMoreCharacters
 We'll start by adding logic to the `starWarsController.getMoreCharacters` middleware function in the `server/controllers/starWarsController.js` file.
-1. [  ] Use the [node-fetch]() library to send a `GET` request to `https://swapi.co/api/people/?page=3`.  This url is a specific route on the [Star Wars API](#apis) which will request the next 10 characters from their API.
-1. [  ] Once we have the new characters, parse the response and store _only the new character data_ in `res.locals.newCharacters`. **Hint:** take a look at the results before deciding what to store in `res.locals`. **Hint 2:** make sure to move on to the _next_ piece of middlware.
+1. [  ] Use the [node-fetch]() library to send a `GET` request to `https://swapi.dev/api/people/?page=3`.  This url is a specific route on the [Star Wars API](#apis) which will request the next 10 characters from their API.
+1. [  ] Once we have the new characters, parse the response and store _only the new character data_ in `res.locals.newCharacters`. **Hint:** take a look at the results before deciding what to store in `res.locals`. **Hint 2:** make sure to move on to the _next_ piece of middleware.
 1. [  ] Add an error handler to invoke the global express error handler if something goes wrong.  The global error handler should be passed the following properties in an object:
     1. [  ] `log`: should include the middleware function name where the error occurred as well as any error data returned from the Star Wars API.
     1. [  ] `message`: should be an object with an `err` that will be sent back to the client:
@@ -256,7 +256,7 @@ Now that your router is ready, let's add it to the `/server/server.js` file so t
 #### Add middleware to populate character photos
 You'll notice that your new characters do not have photos.  In order for character photos to display, the character objects need to have a `photo` property. Let's add this to each new character by creating a new middleware function in the `server/controllers/starWarsController.js` file.
 1. [  ] We'll use a helper function along with the name of each character in order to set the `photo` property.  To do this, let's first require in the `convertToPhotoUrl` from the `server/utils/helpers.js` file.
-1. [  ] Create a new express middlware function in `starWarsController` called `populateCharacterPhotos`.
+1. [  ] Create a new express middleware function in `starWarsController` called `populateCharacterPhotos`.
 We will expect that this piece of middleware will be called _after_ we have gotten new characters. So we will use the `res.locals.newCharacters` data to create photo urls for each new character.  
 1. [  ] Let's make sure to check if we have this required `res.locals.newCharacters` data and if not, invoke the next error handler to break out of the middleware chain and return an error. The error handler should be passed the following properties in an object:
     1. [  ] `log`: should include the middleware function name where the error occurred as well as a message noting that the required data was not provided.
@@ -321,7 +321,7 @@ Now we're ready to get our first piece of additional data: the character's homew
 #### Add route handler for requests to get more details about a character
 It's time to create a route handler for this new functionality.
 1. [  ] In the `/server/routes/characters.js` file, add a new route handler for `POST` to `/details`.
-1. [  ] This route handler should invoke the following middelware functions:
+1. [  ] This route handler should invoke the following middleware functions:
     1. [  ] starWarsController.validateRequestCharacter
     1. [  ] starWarsController.getHomeworld
     1. [  ] starWarsController.getFilms
