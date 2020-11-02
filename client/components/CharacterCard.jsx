@@ -1,4 +1,3 @@
-/* eslint-disable camelcase, react/no-array-index-key, global-require, import/no-dynamic-require */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon as FAIcon } from '@fortawesome/react-fontawesome';

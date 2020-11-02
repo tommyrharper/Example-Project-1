@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control,
-global-require, import/no-dynamic-require */
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 

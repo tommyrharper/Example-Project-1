@@ -31,8 +31,6 @@ const PORT = 3000;
  * configire express global error handler
  * @see https://expressjs.com/en/guide/error-handling.html#writing-error-handlers
  */
-// eslint-disable-next-line no-unused-vars
-
 
 /**
  * start server
