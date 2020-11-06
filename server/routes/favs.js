@@ -1,4 +1,3 @@
-/* eslint-disable function-paren-newline */
 const express = require('express');
 
 const fileController = require('../controllers/fileController');
