@@ -16,6 +16,7 @@ const PORT = 3000;
  * handle requests for static files
  */
 
+app.use(express.static(path.join(__dirname, '../client')));
 
 /**
  * define route handlers
@@ -23,9 +24,17 @@ const PORT = 3000;
 
 // route handler to respond with main app
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/index.html'));
+});
 
 // catch-all route handler for any requests to an unknown route
+// app.use((err, req, res, next) => {
 
+// })
+app.use('*', (req, res) => {
+  return res.sendStatus(404);
+});
 
 /**
  * configire express global error handler
