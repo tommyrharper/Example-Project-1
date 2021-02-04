@@ -29,9 +29,6 @@ app.get('/', (req, res) => {
 });
 
 // catch-all route handler for any requests to an unknown route
-// app.use((err, req, res, next) => {
-
-// })
 app.use('*', (req, res) => {
   return res.sendStatus(404);
 });
@@ -40,6 +37,13 @@ app.use('*', (req, res) => {
  * configire express global error handler
  * @see https://expressjs.com/en/guide/error-handling.html#writing-error-handlers
  */
+
+app.use((err, req, res, next) => {
+  console.log('Error: ', err);
+  const errorStatus = err.status || 500;
+  return res.sendStatus(errorStatus);
+});
+
 
 /**
  * start server
