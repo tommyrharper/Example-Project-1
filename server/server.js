@@ -16,7 +16,7 @@ const PORT = 3000;
  * handle requests for static files
  */
 
-app.use(express.static(path.join(__dirname, '../client')));
+// app.use(express.static(path.join(__dirname, '../client')));
 
 /**
  * define route handlers
@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 // route handler to respond with main app
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/index.html'));
+app.get('/', (req, res, next) => {
+  return res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
 // catch-all route handler for any requests to an unknown route
@@ -39,9 +39,16 @@ app.use('*', (req, res) => {
  */
 
 app.use((err, req, res, next) => {
-  console.log('Error: ', err);
-  const errorStatus = err.status || 500;
-  return res.sendStatus(errorStatus);
+  console.log('inside global error handler');
+  const defaultError = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 400,
+    message: { err: 'An error occurred' }
+  };
+  const errorObj = Object.assign(defaultError, err);
+
+  console.log('Error: ', errorObj.log);
+  return res.status(errorObj.status).json(errorObj.message);
 });
 
 
