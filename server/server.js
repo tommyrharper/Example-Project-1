@@ -8,6 +8,8 @@ const PORT = 3000;
  * require routers
  */
 
+const apiRouter = require('./routes/api.js');
+
 /**
  * handle parsing request body
  */
@@ -22,6 +24,8 @@ const PORT = 3000;
  * define route handlers
  */
 
+app.use('/api', apiRouter);
+
 // route handler to respond with main app
 
 app.get('/', (req, res, next) => {
@@ -34,7 +38,7 @@ app.use('*', (req, res) => {
 });
 
 /**
- * configire express global error handler
+ * configure express global error handler
  * @see https://expressjs.com/en/guide/error-handling.html#writing-error-handlers
  */
 
