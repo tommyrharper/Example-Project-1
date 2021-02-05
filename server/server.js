@@ -9,20 +9,24 @@ const PORT = 3000;
  */
 
 const apiRouter = require('./routes/api.js');
-
+const favsRouter = require('./routes/favs.js');
 /**
  * handle parsing request body
  */
+
+app.use(express.json()); 
 
 /**
  * handle requests for static files
  */
 
-// app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../client')));
 
 /**
  * define route handlers
  */
+
+app.use('/api/favs', favsRouter);
 
 app.use('/api', apiRouter);
 
@@ -41,6 +45,8 @@ app.use('*', (req, res) => {
  * configure express global error handler
  * @see https://expressjs.com/en/guide/error-handling.html#writing-error-handlers
  */
+
+ 
 
 app.use((err, req, res, next) => {
   console.log('inside global error handler');
