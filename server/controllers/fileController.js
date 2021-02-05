@@ -20,7 +20,6 @@ fileController.getCharacters = (req, res, next) => {
 // ADD MIDDLEWARE TO GET FAVORITE CHARACTERS HERE
 
 fileController.getFavs = (req, res, next) => {
-  console.log('inside getFavs');
   const favs = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/favs.json')));
 
   if (!favs) {
@@ -38,7 +37,6 @@ fileController.getFavs = (req, res, next) => {
 // ADD MIDDLEWARE TO ADD A FAVORITE CHARACTER HERE
 
 fileController.addFav = (req, res, next) => {
-  console.log('inside addFav');
   if (typeof res.locals.favs !== 'object' || Array.isArray(res.locals.favs)) {
     return next({
       log: 'fileController.addFavs: ERROR: Invalid or unfound required data on res.locals object - Expected res.locals.favs to be an object.',
@@ -50,9 +48,7 @@ fileController.addFav = (req, res, next) => {
   if (res.locals.favs[id]) return next();
 
   res.locals.favs[id] = true;
-  console.log('res.locals.favs', res.locals.favs);
   try {
-    console.log('inside try block');
     fs.writeFileSync(path.resolve(__dirname, '../data/favs.json'), JSON.stringify(res.locals.favs));
   } catch {
     return next({
