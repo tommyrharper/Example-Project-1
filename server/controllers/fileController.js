@@ -19,8 +19,49 @@ fileController.getCharacters = (req, res, next) => {
 
 // ADD MIDDLEWARE TO GET FAVORITE CHARACTERS HERE
 
+fileController.getFavs = (req, res, next) => {
+  console.log('inside getFavs');
+  const favs = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/favs.json')));
+
+  if (!favs) {
+    return next({
+      log: 'fileController.getFavs: ERROR: /* the error from the file system */',
+      message: { err: 'fileController.getFavs: ERROR: Check server logs for details' },
+    });
+  }
+
+  res.locals.favs = favs;
+
+  return next();
+};
 
 // ADD MIDDLEWARE TO ADD A FAVORITE CHARACTER HERE
+
+fileController.addFav = (req, res, next) => {
+  console.log('inside addFav');
+  if (typeof res.locals.favs !== 'object' || Array.isArray(res.locals.favs)) {
+    return next({
+      log: 'fileController.addFavs: ERROR: Invalid or unfound required data on res.locals object - Expected res.locals.favs to be an object.',
+      message: { err: 'fileController.addFavs: ERROR: Check server logs for details' },
+    });
+  }
+  const id = req.params.id;
+
+  if (res.locals.favs[id]) return next();
+
+  res.locals.favs[id] = true;
+  console.log('res.locals.favs', res.locals.favs);
+  try {
+    console.log('inside try block');
+    fs.writeFileSync(path.resolve(__dirname, '../data/favs.json'), JSON.stringify(res.locals.favs));
+  } catch {
+    return next({
+      log: 'fileController.addFav: ERROR: /* the error from the file system / other calls */',
+      message: { err: 'fileController.addFav: ERROR: Check server logs for details' },
+    });
+  }
+  return next();
+};
 
 
 // ADD MIDDLEWARE TO REMOVE A CHARACTER FROM FAVORITES HERE
