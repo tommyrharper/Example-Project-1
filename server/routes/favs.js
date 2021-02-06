@@ -11,5 +11,8 @@ router.post('/:id', fileController.getFavs, fileController.addFav, (req, res) =>
 
 // ADD REMOVE FAVORITE ROUTE HANDLER HERE
 
+router.delete('/:id', fileController.getFavs, fileController.removeCharacter, (req, res) => {
+  return res.status(200).json(res.locals);
+});
 
 module.exports = router;

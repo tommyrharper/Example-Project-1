@@ -62,6 +62,30 @@ fileController.addFav = (req, res, next) => {
 
 // ADD MIDDLEWARE TO REMOVE A CHARACTER FROM FAVORITES HERE
 
+fileController.removeCharacter = (req, res, next) => {
+  if (typeof res.locals.favs !== 'object' || Array.isArray(res.locals.favs)) {
+    return next({
+      log: 'fileController.removeFav: ERROR: Invalid or unfound required data on res.locals object - Expected res.locals.favs to be an object.',
+      message: { err: 'fileController.removeFav: ERROR: Check server logs for details' },
+    });
+  }
+  const id = req.params.id;
+
+  if (res.locals.favs[id]) {
+    delete res.locals.favs[id];
+  } else return next();
+
+  try {
+    fs.writeFileSync(path.resolve(__dirname, '../data/favs.json'), JSON.stringify(res.locals.favs));
+  } catch {
+    return next({
+      log: 'fileController.removeFav: ERROR: /* the error from the file system / other calls */',
+      message: { err: 'fileController.removeFav: ERROR: Check server logs for details' },
+    });
+  }
+
+  return next();
+};
 
 // Extention 1: ADD MIDDLEWARE TO GET CHARACTER NICKNAMES HERE
 
