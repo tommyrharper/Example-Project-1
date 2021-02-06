@@ -10,6 +10,7 @@ const PORT = 3000;
 
 const apiRouter = require('./routes/api.js');
 const favsRouter = require('./routes/favs.js');
+const charRouter = require('./routes/characters.js');
 /**
  * handle parsing request body
  */
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 /**
  * define route handlers
  */
-
+app.use('/api/characters', charRouter);
 app.use('/api/favs', favsRouter);
 
 app.use('/api', apiRouter);
