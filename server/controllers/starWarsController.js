@@ -61,8 +61,6 @@ starWarsController.getHomeworld = (req, res, next) => {
     }));
 };
 
-
-
 // ADD GET FILMS MIDDLEWARE HERE
 starWarsController.getFilms = (req, res, next) => {
   const promises = [];
