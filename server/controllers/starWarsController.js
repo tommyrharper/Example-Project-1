@@ -22,6 +22,18 @@ starWarsController.getMoreChar = (req, res, next) => {
 
 // ADD MIDDLEWARE TO ADD CHARACTER PHOTOS HERE
 
+starWarsController.populateCharacterPhotos = (req, res, next) => {
+  if (res.locals.newCharacters) {
+    const chars = res.locals.newCharacters;
+    res.locals.newCharacters = chars.map((char) => {
+      char.photo = convertToPhotoUrl(char.name);
+      return char;
+    });
+  } else {
+    next({ err: 'starWarsController.starWarsController: ERROR: Check server logs for details' });
+  }
+  return next();
+};
 
 // ADD REQUEST CHARACTER VALIDATION MIDDLEWARE HERE
 

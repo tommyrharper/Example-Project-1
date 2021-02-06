@@ -5,7 +5,7 @@ const starWarsController = require('../controllers/starWarsController');
 const router = express.Router();
 
 // ADD GET MORE CHARACTERS ROUTE HANDLER HERE
-router.get('/', starWarsController.getMoreChar, (req, res) => {
+router.get('/', starWarsController.getMoreChar, starWarsController.populateCharacterPhotos, (req, res) => {
   return res.status(200).json(res.locals);
 });
 
