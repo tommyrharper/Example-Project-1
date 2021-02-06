@@ -9,6 +9,10 @@ router.get('/', starWarsController.getMoreChar, starWarsController.populateChara
   return res.status(200).json(res.locals);
 });
 
+router.post('/details', starWarsController.validateRequestCharacter, starWarsController.getHomeworld, starWarsController.getFilms, (req, res) => {
+  return res.status(200).json(res.locals);
+});
+
 // ADD GET CHARACTER DETAILS ROUTE HANDLER HERE
 
 module.exports = router;

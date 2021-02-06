@@ -36,12 +36,52 @@ starWarsController.populateCharacterPhotos = (req, res, next) => {
 };
 
 // ADD REQUEST CHARACTER VALIDATION MIDDLEWARE HERE
+starWarsController.validateRequestCharacter = (req, res, next) => {
+  if (req.body.character) {
+    if (req.body.character.homeworld && req.body.character.films) {
+      return next();
+    }
+  } 
+  return next({
+    log: 'starWarsController.validateRequestCharacter: ERROR: expected /* insert missing property here */ to exist',
+    message: { err: 'server POST /details: ERROR: Invalid request body' },
+  });
+}
 
 
 // ADD GET HOMEWORLD MIDDLEWARE HERE
+starWarsController.getHomeworld = (req, res, next) => {
+  fetch(req.body.character.homeworld).then(res => res.json())
+    .then(json => {
+      res.locals.homeworld = json;
+      return next();
+    }).catch(err => next({
+      log: `starWarsController.getHomeworld: ERROR: /* the error from the star wars api */`,
+      message: { err: 'starWarsController.getHomeworld: ERROR: Check server logs for details' },
+    }));
+};
+
 
 
 // ADD GET FILMS MIDDLEWARE HERE
+starWarsController.getFilms = (req, res, next) => {
+  const promises = [];
+  req.body.character.films.forEach((film) => {
+    promises.push(new Promise((resolve, reject) => {
+      fetch(film).then(res => res.json())
+        .then(json => resolve(json))
+        .catch((err) => reject(err));
+    }));
+  });
+  Promise.all(promises)
+    .then(result => {
+      res.locals.films = result;
+      return next();})
+    .catch(err => next({
+      log: `starWarsController.getFilms: ERROR: /* the error from the star wars api */`,
+      message: { err: 'starWarsController.getFilms: ERROR: Check server logs for details' },
+    }));
+};
 
 
 module.exports = starWarsController;
