@@ -15,7 +15,7 @@ const charRouter = require('./routes/characters.js');
  * handle parsing request body
  */
 
-app.use(express.json()); 
+app.use(express.json());
 
 /**
  * handle requests for static files
