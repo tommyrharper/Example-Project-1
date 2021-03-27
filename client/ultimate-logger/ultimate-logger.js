@@ -1,6 +1,6 @@
 import './console-history.min.js';
 
-const PORT = 5555;
+const PORT = 3861;
 
 console._collect = function (type, args) {
   // Collect the timestamp of the console log.
