@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 module.exports = (req, res, next) => {
   const oldWrite = res.write;
   const oldEnd = res.end;
