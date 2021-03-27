@@ -25,6 +25,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log('Component mounted from App.jsx')
     fetch('/api/')
       .then(res => res.json())
       .then(({ characters, favs = {}, nicknames = {} }) => {
