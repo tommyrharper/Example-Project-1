@@ -46,13 +46,15 @@ console._collect = function (type, args) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ type: type, timestamp: time, arguments: args, stack: stack }),
-  }).then().catch(() => console._error('Connection refused to the Ultimate Logger server'))
-
-  console.history.push({
-    type: type,
-    timestamp: time,
-    arguments: args,
-    stack: stack,
-  });
+    body: JSON.stringify({
+      type: type,
+      timestamp: time,
+      arguments: args,
+      stack: stack,
+    }),
+  })
+    .then()
+    .catch(() =>
+      console._error('Connection refused to the Ultimate Logger Server')
+    );
 };
