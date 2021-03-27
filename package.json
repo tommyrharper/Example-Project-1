@@ -29,6 +29,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "concurrently": "^5.0.0",
+    "console.history": "^1.5.1",
     "cross-env": "^6.0.3",
     "css-loader": "^1.0.1",
     "eslint": "^7.12.1",

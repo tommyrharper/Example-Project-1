@@ -1,8 +1,11 @@
 const path = require('path');
 const express = require('express');
+const collector = require('./ultimate-logger/ultimate-logger-collector.js');
+require('./ultimate-logger/ultimate-logger.js');
 
 const app = express();
 const PORT = 3000;
+
 
 /**
  * require routers
@@ -11,25 +14,26 @@ const PORT = 3000;
 const apiRouter = require('./routes/api.js');
 const favsRouter = require('./routes/favs.js');
 const charRouter = require('./routes/characters.js');
+
 /**
  * handle parsing request body
  */
 
 app.use(express.json());
-
 /**
  * handle requests for static files
  */
 
 app.use(express.static(path.join(__dirname, '../client')));
+app.use(collector);
 
 /**
  * define route handlers
  */
 app.use('/api/characters', charRouter);
 app.use('/api/favs', favsRouter);
-
 app.use('/api', apiRouter);
+
 
 // route handler to respond with main app
 
@@ -39,8 +43,10 @@ app.get('/', (req, res, next) => {
 
 // catch-all route handler for any requests to an unknown route
 app.use('*', (req, res) => {
+  console.log('404')
   return res.sendStatus(404);
 });
+
 
 /**
  * configure express global error handler

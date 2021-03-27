@@ -5,7 +5,7 @@ const fileController = {};
 
 fileController.getCharacters = (req, res, next) => {
   const { results } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/characters.json'), 'UTF-8'));
-
+  console.log('GET CHARACTERS')
   if (!results) {
     return next({
       log: 'fileController.getCharacters: ERROR: Error getting characters data from characters.json file',
