@@ -40,19 +40,30 @@ console._collect = function (type, args) {
     }
   }
   // Add the log to our history.
-  console._log({ type: type, timestamp: time, arguments: args, stack: stack });
-  fetch(`http://localhost:${PORT}/api/logs/client`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ type: type, timestamp: time, arguments: args, stack: stack }),
-  }).then().catch( () => console._error('Connection refused to the Ultimate Logger server'))
-  console.history.push({
-    type: type,
-    timestamp: time,
-    arguments: args,
-    stack: stack,
-  });
+  if (type !== 'warn') {
+    fetch(`http://localhost:${PORT}/api/logs/client`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: type,
+        timestamp: time,
+        arguments: args,
+        stack: stack,
+      }),
+    })
+      .then(() => {
+        console.history.push({
+          type: type,
+          timestamp: time,
+          arguments: args,
+          stack: stack,
+        });
+      })
+      .catch(() =>
+        console._error('Connection refused to the Ultimate Logger server')
+      );
+  }
 };
