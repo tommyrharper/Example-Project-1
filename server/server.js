@@ -43,7 +43,7 @@ app.get('/', (req, res, next) => {
 
 // catch-all route handler for any requests to an unknown route
 app.use('*', (req, res) => {
-  console.log('404')
+  console.log('404');
   return res.sendStatus(404);
 });
 
@@ -73,6 +73,7 @@ app.use((err, req, res, next) => {
  * start server
  */
 app.listen(PORT, () => {
+  console.log('inside server');
   console.log(`Server listening on port: ${PORT}`);
 });
 
