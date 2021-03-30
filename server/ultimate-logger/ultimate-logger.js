@@ -4,7 +4,7 @@ const PORT = 3861;
 
 console._collect = function (type, args) {
   // Collect the timestamp of the console log.
-  var time = new Date().toUTCString();
+  var time = new Date().toISOString().split('T').join(' - ').slice(0, -1);
 
   // Make sure the 'type' parameter is set. If no type is set, we fall
   // back to the default log type.
