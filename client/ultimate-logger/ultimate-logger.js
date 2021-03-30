@@ -2,6 +2,9 @@ import './console-history.min.js';
 
 const PORT = 3861;
 
+import { io } from "socket.io-client";
+const socket = io('http://localhost:3861/', {transports: ['websocket']});
+
 console._collect = function (type, args) {
   // Collect the timestamp of the console log.
   var time = new Date().toISOString().split('T').join(' - ').slice(0, -1);
@@ -41,29 +44,12 @@ console._collect = function (type, args) {
   }
   // Add the log to our history.
   if (type !== 'warn') {
-    fetch(`http://localhost:${PORT}/api/logs/client`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: type,
-        timestamp: time,
-        arguments: args,
-        stack: stack,
-      }),
-    })
-      .then(() => {
-        console.history.push({
-          type: type,
-          timestamp: time,
-          arguments: args,
-          stack: stack,
-        });
-      })
-      .catch(() =>
-        console._error('Connection refused to the Ultimate Logger server')
-      );
+    const data = {
+      type: type,
+      timestamp: time,
+      arguments: args,
+      stack: stack,
+    };
+    socket.emit("store-logs", { class: 'client', logs: data });
   }
 };
