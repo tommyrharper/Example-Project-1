@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
-const collector = require('./ultimate-logger/ultimate-logger-collector.js');
-require('./ultimate-logger/ultimate-logger.js');
+const collector = require('./ultimate-logger/ultimate-logger.js');
+// require('./ultimate-logger/ultimate-logger.js');
 
 const app = express();
 const PORT = 3000;
