@@ -9,7 +9,7 @@ console._intercept = function (type, args) {
   // function in your own script, and add the line below to the end or
   // begin of your own 'console._intercept' function.
   // REMEMBER: Use only underscore console commands inside _intercept!
-  if (type !== 'warn') {
+  if (type !== 'warn' && type !== 'info') {
     queue.enqueue(() => console._collect(type, args));
   }
 };
@@ -60,9 +60,10 @@ console._collect = function (type, args) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        class:'client',
         type: type,
         timestamp: time,
-        arguments: args,
+        log: args[0],
         stack: stack,
       }),
     })
@@ -76,7 +77,7 @@ console._collect = function (type, args) {
         resolve('Success');
       })
       .catch(() =>
-        console._error('Connection refused to the Ultimate Logger server')
+        console._error('Connection refused to the Ultimate Logger server- client path')
       );
   });
 };

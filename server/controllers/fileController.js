@@ -5,7 +5,7 @@ const fileController = {};
 
 fileController.getCharacters = (req, res, next) => {
   const { results } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/characters.json'), 'UTF-8'));
-  console.log('GET CHARACTERS')
+  console.log('GET CHARACTERS');
   if (!results) {
     return next({
       log: 'fileController.getCharacters: ERROR: Error getting characters data from characters.json file',
@@ -20,6 +20,7 @@ fileController.getCharacters = (req, res, next) => {
 // ADD MIDDLEWARE TO GET FAVORITE CHARACTERS HERE
 
 fileController.getFavs = (req, res, next) => {
+  console.log('getting favourite');
   const favs = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../data/favs.json')));
 
   if (!favs) {
@@ -37,6 +38,7 @@ fileController.getFavs = (req, res, next) => {
 // ADD MIDDLEWARE TO ADD A FAVORITE CHARACTER HERE
 
 fileController.addFav = (req, res, next) => {
+  console.log('adding favourite');
   if (typeof res.locals.favs !== 'object' || Array.isArray(res.locals.favs)) {
     return next({
       log: 'fileController.addFavs: ERROR: Invalid or unfound required data on res.locals object - Expected res.locals.favs to be an object.',

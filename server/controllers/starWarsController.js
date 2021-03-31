@@ -56,7 +56,7 @@ starWarsController.getHomeworld = (req, res, next) => {
       res.locals.homeworld = json;
       return next();
     }).catch(err => next({
-      log: `starWarsController.getHomeworld: ERROR: /* the error from the star wars api */`,
+      log: 'starWarsController.getHomeworld: ERROR: /* the error from the star wars api */',
       message: { err: 'starWarsController.getHomeworld: ERROR: Check server logs for details' },
     }));
 };
@@ -76,7 +76,7 @@ starWarsController.getFilms = (req, res, next) => {
       res.locals.films = result;
       return next();})
     .catch(err => next({
-      log: `starWarsController.getFilms: ERROR: /* the error from the star wars api */`,
+      log: 'starWarsController.getFilms: ERROR: /* the error from the star wars api */',
       message: { err: 'starWarsController.getFilms: ERROR: Check server logs for details' },
     }));
 };

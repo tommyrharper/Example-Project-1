@@ -22,28 +22,45 @@ module.exports = (req, res, next) => {
         }
         const body = Buffer.concat(chunks).toString('utf8');
 
-        fetch(`http://localhost:${PORT}/api/requests`, {
+        fetch(`http://localhost:${PORT}/api/logs/requests`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            timestamp: new Date().toISOString().split('T').join(' - ').slice(0, -1),
-            fromIP:
-              req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-            method: req.method,
-            originalUri: req.originalUrl,
-            uri: req.url,
-            requestData: req.body,
-            responseData: body,
-            responseStatus: res.statusCode,
-            referer: req.headers.referer || '',
-          }),
+          body: JSON.stringify([
+            {
+              class: 'request',
+              timestamp: new Date()
+                .toISOString()
+                .split('T')
+                .join(' - ')
+                .slice(0, -1),
+              fromIP:
+                req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+              method: req.method,
+              originalUri: req.originalUrl,
+              uri: req.url,
+              requestData: req.body,
+            },
+            {
+              class: 'response',
+              timestamp: new Date()
+                .toISOString()
+                .split('T')
+                .join(' - ')
+                .slice(0, -1),
+              responseData: body,
+              responseStatus: res.statusCode,
+              referer: req.headers.referer || '',
+            },
+          ]),
         })
-          .then(() => resolve('OK!'))
+          .then(() =>  resolve('Success'))
           .catch(() =>
-            console._error('Connection refused to the Ultimate Logger Server')
+            console._error(
+              'Connection refused to the Ultimate Logger Server- request path'
+            )
           );
 
         oldEnd.apply(res, restArgs);
