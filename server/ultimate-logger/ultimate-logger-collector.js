@@ -29,7 +29,7 @@ module.exports = (req, res, next) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            timestamp: new Date().toUTCString(),
+            timestamp: new Date().toISOString().split('T').join(' - ').slice(0, -1),
             fromIP:
               req.headers['x-forwarded-for'] || req.connection.remoteAddress,
             method: req.method,
