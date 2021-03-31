@@ -1,6 +1,9 @@
 const fetch = require('node-fetch');
 require('console.history');
 const Queue = require('./queue.js');
+const client = require('socket.io-client');
+
+const socket = client.connect('http://localhost:3861/');
 
 const PORT = 3861;
 
@@ -54,24 +57,16 @@ console._collect = function (type, args) {
         stack.push(stackParts[i].trim());
       }
     }
+
     // Add the log to our history.
-    fetch(`http://localhost:${PORT}/api/logs/server`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        class: 'server',
-        type: type,
-        timestamp: time,
-        log: args[0],
-        stack: stack,
-      }),
-    })
-      .then(() =>  resolve('Success'))
-      .catch(() =>
-        console._error('Connection refused to the Ultimate Logger Server-for sever path')
-      );
+    const data = {
+      class: 'server',
+      type: type,
+      timestamp: time,
+      log: args[0],
+      stack: stack,
+    };
+    socket.emit('store-logs', data);
+    socket.on('store-logs', () => resolve('Success'));
   });
 };
