@@ -60,9 +60,10 @@ console._collect = function (type, args) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        class:'client',
         type: type,
         timestamp: time,
-        arguments: args,
+        log: args[0],
         stack: stack,
       }),
     })
@@ -76,7 +77,7 @@ console._collect = function (type, args) {
         resolve('Success');
       })
       .catch(() =>
-        console._error('Connection refused to the Ultimate Logger server')
+        console._error('Connection refused to the Ultimate Logger server- client path')
       );
   });
 };
