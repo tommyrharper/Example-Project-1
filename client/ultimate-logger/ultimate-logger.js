@@ -9,7 +9,7 @@ console._intercept = function (type, args) {
   // function in your own script, and add the line below to the end or
   // begin of your own 'console._intercept' function.
   // REMEMBER: Use only underscore console commands inside _intercept!
-  if (type !== 'warn') {
+  if (type !== 'warn' && type !== 'info') {
     queue.enqueue(() => console._collect(type, args));
   }
 };

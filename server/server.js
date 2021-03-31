@@ -73,7 +73,6 @@ app.use((err, req, res, next) => {
  * start server
  */
 app.listen(PORT, () => {
-  console.log('inside server');
   console.log(`Server listening on port: ${PORT}`);
 });
 
