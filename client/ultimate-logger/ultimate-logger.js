@@ -1,5 +1,8 @@
 import './console-history.min.js';
 import Queue from './queue.js';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3861/', {transports: ['websocket']});
 
 const PORT = 3861;
 const queue = new Queue();
@@ -53,31 +56,14 @@ console._collect = function (type, args) {
       }
     }
     // Add the log to our history.
-    fetch(`http://localhost:${PORT}/api/logs/client`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        class:'client',
-        type: type,
-        timestamp: time,
-        log: args[0],
-        stack: stack,
-      }),
-    })
-      .then(() => {
-        console.history.push({
-          type: type,
-          timestamp: time,
-          arguments: args,
-          stack: stack,
-        });
-        resolve('Success');
-      })
-      .catch(() =>
-        console._error('Connection refused to the Ultimate Logger server- client path')
-      );
+    const data = {
+      class:'client',
+      type: type,
+      timestamp: time,
+      log: args[0],
+      stack: stack,
+    };
+    socket.emit('store-logs', data);
+    socket.on('store-logs', () => resolve('Success'));
   });
 };
