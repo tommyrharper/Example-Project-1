@@ -1,5 +1,8 @@
 const fetch = require('node-fetch');
 const Queue = require('./queue.js');
+const client = require('socket.io-client');
+
+const socket = client.connect('http://localhost:3861/');
 
 const queue = new Queue();
 
@@ -22,46 +25,36 @@ module.exports = (req, res, next) => {
         }
         const body = Buffer.concat(chunks).toString('utf8');
 
-        fetch(`http://localhost:${PORT}/api/logs/requests`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+        // Add the log to our history.
+        const data = [
+          {
+            class: 'request',
+            timestamp: new Date()
+              .toISOString()
+              .split('T')
+              .join(' - ')
+              .slice(0, -1),
+            fromIP:
+              req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+            method: req.method,
+            originalUri: req.originalUrl,
+            uri: req.url,
+            requestData: req.body,
           },
-          body: JSON.stringify([
-            {
-              class: 'request',
-              timestamp: new Date()
-                .toISOString()
-                .split('T')
-                .join(' - ')
-                .slice(0, -1),
-              fromIP:
-                req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-              method: req.method,
-              originalUri: req.originalUrl,
-              uri: req.url,
-              requestData: req.body,
-            },
-            {
-              class: 'response',
-              timestamp: new Date()
-                .toISOString()
-                .split('T')
-                .join(' - ')
-                .slice(0, -1),
-              responseData: body,
-              responseStatus: res.statusCode,
-              referer: req.headers.referer || '',
-            },
-          ]),
-        })
-          .then(() =>  resolve('Success'))
-          .catch(() =>
-            console._error(
-              'Connection refused to the Ultimate Logger Server- request path'
-            )
-          );
+          {
+            class: 'response',
+            timestamp: new Date()
+              .toISOString()
+              .split('T')
+              .join(' - ')
+              .slice(0, -1),
+            responseData: body,
+            responseStatus: res.statusCode,
+            referer: req.headers.referer || '',
+          },
+        ];
+        socket.emit('store-logs', data);
+        socket.on('store-logs', () => resolve('Success'));
 
         oldEnd.apply(res, restArgs);
       };
