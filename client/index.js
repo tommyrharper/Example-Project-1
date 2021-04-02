@@ -2,7 +2,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import './ultimate-logger/ultimate-logger.js';
+import fm from 'fullstack-monitor';
+
+fm.config.PORT = 3861;
+fm.setup();
 
 render(
   <BrowserRouter>

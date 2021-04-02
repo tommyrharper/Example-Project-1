@@ -1,9 +1,9 @@
 const path = require('path');
 const express = require('express');
-const collector = require('./ultimate-logger/ultimate-logger.js');
-// require('./ultimate-logger/ultimate-logger.js');
+const fm = require('fullstack-monitor');
 
 const app = express();
+fm.setup();
 const PORT = 3000;
 
 
@@ -25,7 +25,7 @@ app.use(express.json());
  */
 
 app.use(express.static(path.join(__dirname, '../client')));
-app.use(collector);
+app.use(fm.run);
 
 /**
  * define route handlers
