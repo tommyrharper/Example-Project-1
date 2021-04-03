@@ -3,7 +3,7 @@ const express = require('express');
 const fm = require('fullstack-monitor');
 
 const app = express();
-fm.setup();
+fm.setup('server');
 const PORT = 3000;
 
 
