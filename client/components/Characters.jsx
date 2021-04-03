@@ -50,6 +50,7 @@ class Characters extends Component {
   }
 
   favClicked(charId) {
+    console.log('favClicked button clicked');
     let method = 'POST';
     if (this.props.favs
       && this.props.favs[charId]) method = 'DELETE';
