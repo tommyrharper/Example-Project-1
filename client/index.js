@@ -5,7 +5,7 @@ import App from './App';
 import fm from 'fullstack-monitor';
 
 fm.config.PORT = 3861;
-fm.setup();
+fm.setup('client');
 
 render(
   <BrowserRouter>
